@@ -1,16 +1,51 @@
+import { useState } from 'react'
 import { useResume } from '../../context/ResumeContext'
 import { useTemplate } from '../../context/TemplateContext'
 import { TemplateTabs } from '../../components/TemplateTabs'
+import { resumeToPlainText } from '../../utils/resumeToText'
+import { isResumeIncomplete } from '../../utils/exportValidation'
 import './PreviewPage.css'
 
 export function PreviewPage() {
   const { data } = useResume()
   const { template } = useTemplate()
+  const [copyFeedback, setCopyFeedback] = useState(false)
+  const incomplete = isResumeIncomplete(data)
+
+  const handlePrint = () => {
+    window.print()
+  }
+
+  const handleCopyText = async () => {
+    const text = resumeToPlainText(data)
+    try {
+      await navigator.clipboard.writeText(text)
+      setCopyFeedback(true)
+      setTimeout(() => setCopyFeedback(false), 2000)
+    } catch {
+      setCopyFeedback(false)
+    }
+  }
 
   return (
     <div className="preview-page">
-      <TemplateTabs />
-      <article className={`preview-resume template-${template}`}>
+      <div className="preview-export-actions no-print">
+        <TemplateTabs />
+        {incomplete && (
+          <p className="preview-export-warning" role="status">
+            Your resume may look incomplete.
+          </p>
+        )}
+        <div className="preview-export-buttons">
+          <button type="button" className="btn btn-outline" onClick={handlePrint}>
+            Print / Save as PDF
+          </button>
+          <button type="button" className="btn btn-outline" onClick={handleCopyText}>
+            {copyFeedback ? 'Copied!' : 'Copy Resume as Text'}
+          </button>
+        </div>
+      </div>
+      <article className={`preview-resume template-${template} print-resume`}>
         <header className="preview-resume-header">
           <h1 className="preview-resume-name">{data.personal.name || 'Your name'}</h1>
           <p className="preview-resume-contact">

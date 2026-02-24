@@ -118,3 +118,74 @@
 .preview-resume.template-minimal .preview-resume-sub {
   font-size: 0.9rem;
 }
+
+/* Export bar (hidden in print) */
+.preview-export-actions {
+  max-width: 720px;
+  margin: 0 auto var(--space-24);
+}
+
+.preview-export-warning {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin: 0 0 var(--space-8);
+}
+
+.preview-export-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-8);
+}
+
+.preview-export-buttons .btn {
+  padding: var(--space-8) var(--space-16);
+  font-size: 0.9rem;
+}
+
+/* Layout precision: no overlap, consistent spacing, no overflow */
+.preview-resume {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+.preview-resume-p,
+.preview-resume-sub,
+.preview-resume-contact {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+/* Print: only resume, white, clean margins, no cut-off */
+@media print {
+  .preview-page {
+    padding: 0;
+    background: #fff;
+  }
+
+  .preview-resume {
+    max-width: 100%;
+    margin: 0;
+    padding: 16mm 20mm;
+    box-shadow: none;
+    background: #fff;
+    color: #1a1a1a;
+  }
+
+  .preview-resume-header,
+  .preview-resume-section {
+    page-break-after: avoid;
+  }
+
+  .preview-resume-item {
+    page-break-inside: avoid;
+  }
+
+  .preview-resume-p,
+  .preview-resume-sub {
+    page-break-inside: avoid;
+  }
+
+  .resume-main {
+    padding: 0;
+  }
+}

@@ -12,7 +12,7 @@ export function ResumeLayout() {
 
   return (
     <div className="resume-layout">
-      <header className="resume-nav">
+      <header className="resume-nav no-print">
         <Link to="/" className="resume-nav-brand">
           AI Resume Builder
         </Link>
