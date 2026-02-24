@@ -1,0 +1,40 @@
+* {
+  box-sizing: border-box;
+}
+:root {
+  /* Layout */
+  --space-8: 8px;
+  --space-16: 16px;
+  --space-24: 24px;
+  --space-40: 40px;
+  --space-64: 64px;
+  --topbar-h: 48px;
+  --context-h: 40px;
+  --proof-h: 36px;
+  --panel-w: 30%;
+  --main-w: 70%;
+  --text-max-width: 720px;
+
+  /* Colors — off-white, no gradients, no glass, no neon */
+  --bg: #F7F6F3;
+  --surface: #EEEDE9;
+  --border: #D4D2CC;
+  --text: #1a1a1a;
+  --muted: #5c5c5c;
+  --accent: #8B0000;
+  --success: #2d5a27;
+  --warning: #8b6914;
+  --error: #8B0000;
+}
+html, body, #root {
+  height: 100%;
+  margin: 0;
+}
+body {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+h1, h2, h3, .font-serif {
+  font-family: Georgia, 'Times New Roman', serif;
+}
