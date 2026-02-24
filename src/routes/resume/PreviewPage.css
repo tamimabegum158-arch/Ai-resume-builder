@@ -5,6 +5,20 @@
   min-height: 100%;
 }
 
+@media (max-width: 480px) {
+  .preview-page {
+    padding: var(--space-16);
+  }
+
+  .preview-export-actions {
+    margin-bottom: var(--space-16);
+  }
+
+  .preview-resume {
+    padding: var(--space-24);
+  }
+}
+
 .preview-resume {
   max-width: 720px;
   margin: 0 auto;

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useResume } from '../../context/ResumeContext'
 import { useTemplate } from '../../context/TemplateContext'
 import { TemplateTabs } from '../../components/TemplateTabs'
+import { AtsScoreCard } from './AtsScoreCard'
 import { resumeToPlainText } from '../../utils/resumeToText'
 import { isResumeIncomplete } from '../../utils/exportValidation'
 import './PreviewPage.css'
@@ -33,6 +34,7 @@ export function PreviewPage() {
   return (
     <div className="preview-page">
       <div className="preview-export-actions no-print">
+        <AtsScoreCard data={data} />
         <TemplateTabs />
         {incomplete && (
           <p className="preview-export-warning" role="status">
