@@ -1,6 +1,7 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { BuildProvider } from './context/BuildContext'
 import { ResumeProvider } from './context/ResumeContext'
+import { TemplateProvider } from './context/TemplateContext'
 import { PremiumLayout } from './components/PremiumLayout'
 import { ResumeLayout } from './components/ResumeLayout'
 import { RBStepPage } from './routes/rb/RBStepPage'
@@ -14,13 +15,14 @@ export default function App() {
   return (
     <BuildProvider>
       <ResumeProvider>
-        <Routes>
-          <Route element={<ResumeLayout />}>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/builder" element={<BuilderPage />} />
-            <Route path="/preview" element={<PreviewPage />} />
-            <Route path="/proof" element={<ProofPlaceholder />} />
-          </Route>
+        <TemplateProvider>
+          <Routes>
+            <Route element={<ResumeLayout />}>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/builder" element={<BuilderPage />} />
+              <Route path="/preview" element={<PreviewPage />} />
+              <Route path="/proof" element={<ProofPlaceholder />} />
+            </Route>
           <Route path="/rb" element={<Navigate to="/rb/01-problem" replace />} />
           <Route element={<PremiumLayout />}>
             <Route path="/rb/01-problem" element={<RBStepPage />} />
@@ -35,6 +37,7 @@ export default function App() {
           </Route>
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
+        </TemplateProvider>
       </ResumeProvider>
     </BuildProvider>
   )

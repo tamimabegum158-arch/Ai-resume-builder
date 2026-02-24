@@ -42,8 +42,16 @@
   min-width: 2ch;
 }
 
+.ats-improvements-title {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text);
+  margin: var(--space-16) 0 var(--space-8);
+}
+
 .ats-suggestions {
-  margin: var(--space-16) 0 0;
+  margin: 0;
   padding: 0 0 0 var(--space-24);
   list-style: disc;
   font-size: 0.85rem;

@@ -95,3 +95,26 @@
   opacity: 0.8;
   margin: 0 0 var(--space-8);
 }
+
+/* Template variants: layout only, B&W */
+.preview-resume.template-modern .preview-resume-header {
+  padding-bottom: var(--space-24);
+}
+
+.preview-resume.template-modern .preview-resume-h2 {
+  letter-spacing: 0.06em;
+}
+
+.preview-resume.template-minimal .preview-resume-section {
+  margin-bottom: var(--space-16);
+}
+
+.preview-resume.template-minimal .preview-resume-h2 {
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+}
+
+.preview-resume.template-minimal .preview-resume-p,
+.preview-resume.template-minimal .preview-resume-sub {
+  font-size: 0.9rem;
+}

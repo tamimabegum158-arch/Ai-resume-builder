@@ -1,9 +1,13 @@
 import { useResume } from '../../context/ResumeContext'
+import { useTemplate } from '../../context/TemplateContext'
+import { TemplateTabs } from '../../components/TemplateTabs'
 import { AtsScoreCard } from './AtsScoreCard'
+import { BulletGuidance } from './BulletGuidance'
 import { LivePreview } from './LivePreview'
 import './BuilderPage.css'
 
 export function BuilderPage() {
+  const { template } = useTemplate()
   const {
     data,
     setPersonal,
@@ -157,6 +161,7 @@ export function BuilderPage() {
                 className="form-textarea form-textarea-sm"
                 rows={2}
               />
+              <BulletGuidance details={e.details} />
               <button type="button" className="btn btn-sm btn-remove" onClick={() => removeExperience(e.id)}>
                 Remove
               </button>
@@ -194,6 +199,7 @@ export function BuilderPage() {
                 className="form-textarea form-textarea-sm"
                 rows={2}
               />
+              <BulletGuidance details={p.details} />
               <button type="button" className="btn btn-sm btn-remove" onClick={() => removeProject(p.id)}>
                 Remove
               </button>
@@ -232,8 +238,9 @@ export function BuilderPage() {
       </div>
 
       <div className="builder-column builder-preview">
+        <TemplateTabs />
         <AtsScoreCard data={data} />
-        <LivePreview data={data} />
+        <LivePreview data={data} template={template} />
       </div>
     </div>
   )

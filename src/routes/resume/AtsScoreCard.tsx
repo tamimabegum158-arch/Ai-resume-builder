@@ -17,11 +17,14 @@ export function AtsScoreCard({ data }: { data: ResumeData }) {
         <span className="ats-score-value">{score}</span>
       </div>
       {suggestions.length > 0 && (
-        <ul className="ats-suggestions">
-          {suggestions.map((s, i) => (
-            <li key={i}>{s}</li>
-          ))}
-        </ul>
+        <>
+          <h4 className="ats-improvements-title">Top 3 Improvements</h4>
+          <ul className="ats-suggestions">
+            {suggestions.map((s, i) => (
+              <li key={i}>{s}</li>
+            ))}
+          </ul>
+        </>
       )}
     </div>
   )

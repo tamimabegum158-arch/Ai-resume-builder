@@ -1,0 +1,28 @@
+.template-tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: var(--space-16);
+  border-bottom: 1px solid var(--border);
+}
+
+.template-tab {
+  padding: var(--space-8) var(--space-16);
+  font-size: 0.9rem;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  color: var(--muted);
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.template-tab:hover {
+  color: var(--text);
+}
+
+.template-tab.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+  font-weight: 600;
+}

@@ -1,7 +1,8 @@
 import type { ResumeData } from '../../context/ResumeContext'
+import type { TemplateId } from '../../context/TemplateContext'
 import './LivePreview.css'
 
-export function LivePreview({ data }: { data: ResumeData }) {
+export function LivePreview({ data, template = 'classic' }: { data: ResumeData; template?: TemplateId }) {
   const hasSummary = data.summary.trim() !== ''
   const hasEducation = data.education.length > 0
   const hasExperience = data.experience.length > 0
@@ -11,7 +12,7 @@ export function LivePreview({ data }: { data: ResumeData }) {
   const hasAnySection = hasSummary || hasEducation || hasExperience || hasProjects || hasSkills || hasLinks
 
   return (
-    <div className="live-preview">
+    <div className={`live-preview template-${template}`}>
       <div className="live-preview-inner">
         <div className="live-preview-header">
           <div className="live-preview-name">{data.personal.name || 'Your name'}</div>

@@ -101,3 +101,32 @@
   font-style: italic;
   margin: var(--space-16) 0 0;
 }
+
+/* Template variants: layout only, clean B&W */
+.live-preview.template-classic {
+  font-size: 0.9rem;
+}
+
+.live-preview.template-modern .live-preview-header {
+  padding-bottom: var(--space-24);
+  margin-bottom: var(--space-24);
+}
+
+.live-preview.template-modern .live-preview-h3 {
+  letter-spacing: 0.06em;
+  font-size: 0.8rem;
+}
+
+.live-preview.template-minimal .live-preview-section {
+  margin-bottom: var(--space-16);
+}
+
+.live-preview.template-minimal .live-preview-h3 {
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+}
+
+.live-preview.template-minimal .live-preview-p,
+.live-preview.template-minimal .live-preview-item-sub {
+  font-size: 0.85rem;
+}

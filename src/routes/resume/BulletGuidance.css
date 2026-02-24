@@ -1,0 +1,11 @@
+.bullet-guidance {
+  margin-top: var(--space-4);
+  font-size: 0.8rem;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+.bullet-guidance-item:not(:last-child)::after {
+  content: ' · ';
+  margin-right: 2px;
+}

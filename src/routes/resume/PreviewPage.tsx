@@ -1,12 +1,16 @@
 import { useResume } from '../../context/ResumeContext'
+import { useTemplate } from '../../context/TemplateContext'
+import { TemplateTabs } from '../../components/TemplateTabs'
 import './PreviewPage.css'
 
 export function PreviewPage() {
   const { data } = useResume()
+  const { template } = useTemplate()
 
   return (
     <div className="preview-page">
-      <article className="preview-resume">
+      <TemplateTabs />
+      <article className={`preview-resume template-${template}`}>
         <header className="preview-resume-header">
           <h1 className="preview-resume-name">{data.personal.name || 'Your name'}</h1>
           <p className="preview-resume-contact">
