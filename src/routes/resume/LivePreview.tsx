@@ -2,6 +2,14 @@ import type { ResumeData } from '../../context/ResumeContext'
 import './LivePreview.css'
 
 export function LivePreview({ data }: { data: ResumeData }) {
+  const hasSummary = data.summary.trim() !== ''
+  const hasEducation = data.education.length > 0
+  const hasExperience = data.experience.length > 0
+  const hasProjects = data.projects.length > 0
+  const hasSkills = data.skills.trim() !== ''
+  const hasLinks = data.links.github.trim() !== '' || data.links.linkedin.trim() !== ''
+  const hasAnySection = hasSummary || hasEducation || hasExperience || hasProjects || hasSkills || hasLinks
+
   return (
     <div className="live-preview">
       <div className="live-preview-inner">
@@ -13,18 +21,15 @@ export function LivePreview({ data }: { data: ResumeData }) {
               .join(' · ') || 'Email · Phone · Location'}
           </div>
         </div>
-        {data.summary ? (
+
+        {hasSummary && (
           <section className="live-preview-section">
             <h3 className="live-preview-h3">Summary</h3>
             <p className="live-preview-p">{data.summary}</p>
           </section>
-        ) : (
-          <section className="live-preview-section live-preview-placeholder">
-            <h3 className="live-preview-h3">Summary</h3>
-            <p className="live-preview-p muted">Summary will appear here.</p>
-          </section>
         )}
-        {data.education.length > 0 ? (
+
+        {hasEducation && (
           <section className="live-preview-section">
             <h3 className="live-preview-h3">Education</h3>
             {data.education.map((e) => (
@@ -38,13 +43,9 @@ export function LivePreview({ data }: { data: ResumeData }) {
               </div>
             ))}
           </section>
-        ) : (
-          <section className="live-preview-section live-preview-placeholder">
-            <h3 className="live-preview-h3">Education</h3>
-            <p className="live-preview-p muted">Education entries will appear here.</p>
-          </section>
         )}
-        {data.experience.length > 0 ? (
+
+        {hasExperience && (
           <section className="live-preview-section">
             <h3 className="live-preview-h3">Experience</h3>
             {data.experience.map((e) => (
@@ -58,13 +59,9 @@ export function LivePreview({ data }: { data: ResumeData }) {
               </div>
             ))}
           </section>
-        ) : (
-          <section className="live-preview-section live-preview-placeholder">
-            <h3 className="live-preview-h3">Experience</h3>
-            <p className="live-preview-p muted">Experience entries will appear here.</p>
-          </section>
         )}
-        {data.projects.length > 0 ? (
+
+        {hasProjects && (
           <section className="live-preview-section">
             <h3 className="live-preview-h3">Projects</h3>
             {data.projects.map((p) => (
@@ -77,31 +74,27 @@ export function LivePreview({ data }: { data: ResumeData }) {
               </div>
             ))}
           </section>
-        ) : (
-          <section className="live-preview-section live-preview-placeholder">
-            <h3 className="live-preview-h3">Projects</h3>
-            <p className="live-preview-p muted">Projects will appear here.</p>
-          </section>
         )}
-        {data.skills ? (
+
+        {hasSkills && (
           <section className="live-preview-section">
             <h3 className="live-preview-h3">Skills</h3>
             <p className="live-preview-p">{data.skills}</p>
           </section>
-        ) : (
-          <section className="live-preview-section live-preview-placeholder">
-            <h3 className="live-preview-h3">Skills</h3>
-            <p className="live-preview-p muted">Skills will appear here.</p>
-          </section>
         )}
-        {(data.links.github || data.links.linkedin) ? (
+
+        {hasLinks && (
           <section className="live-preview-section">
             <h3 className="live-preview-h3">Links</h3>
             <p className="live-preview-p">
               {[data.links.github, data.links.linkedin].filter(Boolean).join(' · ')}
             </p>
           </section>
-        ) : null}
+        )}
+
+        {!hasAnySection && (
+          <p className="live-preview-empty">Fill the form to see your resume here.</p>
+        )}
       </div>
     </div>
   )

@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useMemo, useState } from 'react'
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 
 export type PersonalInfo = {
   name: string
@@ -70,6 +70,8 @@ const sampleData: ResumeData = {
   links: { github: 'https://github.com/alexchen', linkedin: 'https://linkedin.com/in/alexchen' },
 }
 
+const STORAGE_KEY = 'resumeBuilderData'
+
 const initialData: ResumeData = {
   personal: { ...emptyPersonal },
   summary: '',
@@ -82,6 +84,53 @@ const initialData: ResumeData = {
 
 function genId() {
   return Math.random().toString(36).slice(2, 10)
+}
+
+function ensureId<T extends { id?: string }>(entry: T): T & { id: string } {
+  return { ...entry, id: entry.id || genId() } as T & { id: string }
+}
+
+function loadFromStorage(): ResumeData {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY)
+    if (!raw) return { ...initialData, personal: { ...emptyPersonal }, links: { ...emptyLinks } }
+    const parsed = JSON.parse(raw)
+    if (typeof parsed !== 'object' || parsed === null) return { ...initialData, personal: { ...emptyPersonal }, links: { ...emptyLinks } }
+    const personal =
+      parsed.personal && typeof parsed.personal === 'object' && !Array.isArray(parsed.personal)
+        ? { ...emptyPersonal, ...parsed.personal }
+        : { ...emptyPersonal }
+    const links =
+      parsed.links && typeof parsed.links === 'object' && !Array.isArray(parsed.links)
+        ? { ...emptyLinks, ...parsed.links }
+        : { ...emptyLinks }
+    const education = Array.isArray(parsed.education)
+      ? parsed.education.map((e: unknown) => ensureId(e as EducationEntry))
+      : []
+    const experience = Array.isArray(parsed.experience)
+      ? parsed.experience.map((e: unknown) => ensureId(e as ExperienceEntry))
+      : []
+    const projects = Array.isArray(parsed.projects)
+      ? parsed.projects.map((p: unknown) => ensureId(p as ProjectEntry))
+      : []
+    return {
+      personal,
+      summary: typeof parsed.summary === 'string' ? parsed.summary : '',
+      education,
+      experience,
+      projects,
+      skills: typeof parsed.skills === 'string' ? parsed.skills : '',
+      links,
+    }
+  } catch {
+    return { ...initialData, personal: { ...emptyPersonal }, links: { ...emptyLinks } }
+  }
+}
+
+function saveToStorage(data: ResumeData): void {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data))
+  } catch {}
 }
 
 type ResumeContextValue = {
@@ -105,7 +154,11 @@ type ResumeContextValue = {
 const ResumeContext = createContext<ResumeContextValue | null>(null)
 
 export function ResumeProvider({ children }: { children: React.ReactNode }) {
-  const [data, setData] = useState<ResumeData>(initialData)
+  const [data, setData] = useState<ResumeData>(loadFromStorage)
+
+  useEffect(() => {
+    saveToStorage(data)
+  }, [data])
 
   const setPersonal = useCallback((p: Partial<PersonalInfo>) => {
     setData((d) => ({ ...d, personal: { ...d.personal, ...p } }))

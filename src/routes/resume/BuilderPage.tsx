@@ -1,4 +1,5 @@
 import { useResume } from '../../context/ResumeContext'
+import { AtsScoreCard } from './AtsScoreCard'
 import { LivePreview } from './LivePreview'
 import './BuilderPage.css'
 
@@ -231,6 +232,7 @@ export function BuilderPage() {
       </div>
 
       <div className="builder-column builder-preview">
+        <AtsScoreCard data={data} />
         <LivePreview data={data} />
       </div>
     </div>

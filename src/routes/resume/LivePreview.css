@@ -94,3 +94,10 @@
 .live-preview-p.muted {
   color: var(--muted);
 }
+
+.live-preview-empty {
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-style: italic;
+  margin: var(--space-16) 0 0;
+}
