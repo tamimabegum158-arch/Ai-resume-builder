@@ -1,0 +1,36 @@
+.color-theme-picker {
+  margin-bottom: var(--space-16);
+}
+
+.color-theme-picker-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--muted);
+  margin-bottom: var(--space-8);
+}
+
+.color-theme-picker-circles {
+  display: flex;
+  gap: var(--space-8);
+  flex-wrap: wrap;
+}
+
+.color-theme-circle {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  padding: 0;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.color-theme-circle:hover {
+  transform: scale(1.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.color-theme-circle[aria-pressed="true"] {
+  border-color: #1e293b;
+  box-shadow: 0 0 0 2px #fff, 0 0 0 4px #1e293b;
+}

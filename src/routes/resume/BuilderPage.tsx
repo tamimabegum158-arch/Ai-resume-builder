@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { useResume } from '../../context/ResumeContext'
 import { useTemplate } from '../../context/TemplateContext'
-import { TemplateTabs } from '../../components/TemplateTabs'
+import { TemplatePicker } from '../../components/TemplatePicker'
+import { ColorThemePicker } from '../../components/ColorThemePicker'
 import { AtsScoreCard } from './AtsScoreCard'
 import { BulletGuidance } from './BulletGuidance'
 import { LivePreview } from './LivePreview'
@@ -10,7 +11,7 @@ import { ProjectsSection } from './ProjectsSection'
 import './BuilderPage.css'
 
 export function BuilderPage() {
-  const { template } = useTemplate()
+  const { template, setTemplate, colorTheme, setColorTheme, accentColor } = useTemplate()
   const [suggestLoading, setSuggestLoading] = useState(false)
   const {
     data,
@@ -227,9 +228,12 @@ export function BuilderPage() {
       </div>
 
       <div className="builder-column builder-preview">
-        <TemplateTabs />
+        <TemplatePicker template={template} onSelect={setTemplate} accentColor={accentColor} />
+        <ColorThemePicker colorTheme={colorTheme} onSelect={setColorTheme} />
         <AtsScoreCard data={data} />
-        <LivePreview data={data} template={template} />
+        <div className="live-preview-wrap" style={{ ['--resume-accent' as string]: accentColor }}>
+          <LivePreview data={data} template={template} />
+        </div>
       </div>
     </div>
   )

@@ -33,6 +33,10 @@
   background: var(--surface);
 }
 
+.live-preview-wrap {
+  min-height: 0;
+}
+
 .builder-actions {
   margin-bottom: var(--space-24);
 }

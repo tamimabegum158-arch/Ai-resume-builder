@@ -8,12 +8,15 @@ import './PreviewPage.css'
 
 export function PreviewPage() {
   const { data } = useResume()
-  const { template } = useTemplate()
+  const { template, accentColor } = useTemplate()
   const [copyFeedback, setCopyFeedback] = useState(false)
+  const [pdfToast, setPdfToast] = useState(false)
   const incomplete = isResumeIncomplete(data)
 
   const handlePrint = () => {
     window.print()
+    setPdfToast(true)
+    setTimeout(() => setPdfToast(false), 4000)
   }
 
   const handleCopyText = async () => {
@@ -38,14 +41,22 @@ export function PreviewPage() {
         )}
         <div className="preview-export-buttons">
           <button type="button" className="btn btn-outline" onClick={handlePrint}>
-            Print / Save as PDF
+            Download PDF
           </button>
           <button type="button" className="btn btn-outline" onClick={handleCopyText}>
             {copyFeedback ? 'Copied!' : 'Copy Resume as Text'}
           </button>
         </div>
       </div>
-      <article className={`preview-resume template-${template} print-resume`}>
+      {pdfToast && (
+        <div className="preview-pdf-toast" role="status" aria-live="polite">
+          PDF export ready! Check your downloads.
+        </div>
+      )}
+      <article
+        className={`preview-resume template-${template} print-resume`}
+        style={{ ['--resume-accent' as string]: accentColor }}
+      >
         <header className="preview-resume-header">
           <h1 className="preview-resume-name">{data.personal.name || 'Your name'}</h1>
           <p className="preview-resume-contact">

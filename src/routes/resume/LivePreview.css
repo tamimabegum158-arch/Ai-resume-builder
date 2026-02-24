@@ -15,7 +15,7 @@
 .live-preview-header {
   margin-bottom: var(--space-24);
   padding-bottom: var(--space-16);
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--resume-accent, var(--border));
 }
 
 .live-preview-name {
@@ -23,6 +23,7 @@
   font-size: 1.25rem;
   font-weight: 600;
   margin-bottom: var(--space-8);
+  color: var(--resume-accent, var(--text));
 }
 
 .live-preview-contact {
@@ -46,7 +47,7 @@
   text-transform: uppercase;
   letter-spacing: 0.02em;
   margin: 0 0 var(--space-8);
-  color: var(--text);
+  color: var(--resume-accent, var(--text));
 }
 
 .live-preview-p {
@@ -102,9 +103,63 @@
   margin: var(--space-16) 0 0;
 }
 
-/* Template variants: layout only, clean B&W */
+/* Template variants: layout only, accent from --resume-accent */
 .live-preview.template-classic {
   font-size: 0.9rem;
+}
+
+/* Modern: two-column, colored left sidebar */
+.live-preview.template-modern .live-preview-inner {
+  display: flex;
+  min-height: 320px;
+}
+
+.live-preview.template-modern .live-preview-sidebar {
+  width: 32%;
+  min-width: 120px;
+  min-height: 200px;
+  background: var(--resume-accent, hsl(168, 60%, 40%));
+  color: #fff;
+  padding: var(--space-16);
+  border-radius: 4px 0 0 4px;
+}
+
+.live-preview.template-modern .live-preview-sidebar .live-preview-header {
+  border-bottom-color: rgba(255, 255, 255, 0.35);
+  padding-bottom: var(--space-12);
+  margin-bottom: var(--space-16);
+}
+
+.live-preview.template-modern .live-preview-sidebar .live-preview-name,
+.live-preview.template-modern .live-preview-sidebar .live-preview-contact {
+  color: #fff;
+}
+
+.live-preview.template-modern .live-preview-sidebar .live-preview-contact {
+  opacity: 0.9;
+}
+
+.live-preview.template-modern .live-preview-sidebar .live-preview-h3 {
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 0.75rem;
+}
+
+.live-preview.template-modern .live-preview-sidebar .live-preview-skill-label {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.live-preview.template-modern .live-preview-sidebar .live-preview-pill {
+  background: rgba(255, 255, 255, 0.25);
+  color: #fff;
+}
+
+.live-preview.template-modern .live-preview-main {
+  flex: 1;
+  padding: var(--space-16) var(--space-24);
+}
+
+.live-preview.template-modern .live-preview-main .live-preview-header {
+  display: none;
 }
 
 .live-preview.template-modern .live-preview-header {
@@ -173,7 +228,7 @@
 
 .live-preview-link {
   font-size: 0.85rem;
-  color: var(--accent);
+  color: var(--resume-accent, var(--accent));
   text-decoration: none;
 }
 
