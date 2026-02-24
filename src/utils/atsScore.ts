@@ -13,17 +13,19 @@ function wordCount(s: string): number {
     .filter(Boolean).length
 }
 
-function skillsCount(skills: string): number {
-  return skills
-    .split(',')
-    .map((s) => s.trim())
-    .filter(Boolean).length
+function skillsCount(skills: ResumeData['skills']): number {
+  if (!skills || typeof skills !== 'object' || Array.isArray(skills)) return 0
+  return (
+    (skills.technical?.length ?? 0) +
+    (skills.soft?.length ?? 0) +
+    (skills.tools?.length ?? 0)
+  )
 }
 
 function hasNumberInBullets(data: ResumeData): boolean {
   const texts = [
     ...data.experience.map((e) => e.details),
-    ...data.projects.map((p) => p.details),
+    ...data.projects.map((p) => p.details ?? p.description),
   ].filter(Boolean)
   return texts.some((t) => NUMBER_PATTERN.test(t))
 }

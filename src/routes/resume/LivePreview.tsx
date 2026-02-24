@@ -7,7 +7,11 @@ export function LivePreview({ data, template = 'classic' }: { data: ResumeData; 
   const hasEducation = data.education.length > 0
   const hasExperience = data.experience.length > 0
   const hasProjects = data.projects.length > 0
-  const hasSkills = data.skills.trim() !== ''
+  const skillsTotal =
+    (data.skills?.technical?.length ?? 0) +
+    (data.skills?.soft?.length ?? 0) +
+    (data.skills?.tools?.length ?? 0)
+  const hasSkills = skillsTotal > 0
   const hasLinks = data.links.github.trim() !== '' || data.links.linkedin.trim() !== ''
   const hasAnySection = hasSummary || hasEducation || hasExperience || hasProjects || hasSkills || hasLinks
 
@@ -66,12 +70,30 @@ export function LivePreview({ data, template = 'classic' }: { data: ResumeData; 
           <section className="live-preview-section">
             <h3 className="live-preview-h3">Projects</h3>
             {data.projects.map((p) => (
-              <div key={p.id} className="live-preview-item">
-                <div className="live-preview-item-head">
-                  <span className="strong">{p.title || 'Project'}</span>
-                  <span className="muted">{p.period}</span>
+              <div key={p.id} className="live-preview-card">
+                <div className="live-preview-card-title">{p.title || 'Project'}</div>
+                {(p.description || p.details) && (
+                  <p className="live-preview-p">{p.description || p.details}</p>
+                )}
+                {(p.techStack?.length ?? 0) > 0 && (
+                  <div className="live-preview-pills">
+                    {(p.techStack ?? []).map((tech, i) => (
+                      <span key={`${p.id}-${i}`} className="live-preview-pill">{tech}</span>
+                    ))}
+                  </div>
+                )}
+                <div className="live-preview-links">
+                  {p.liveUrl?.trim() && (
+                    <a href={p.liveUrl.trim()} target="_blank" rel="noopener noreferrer" className="live-preview-link" aria-label="Live link">
+                      🔗 Live
+                    </a>
+                  )}
+                  {p.githubUrl?.trim() && (
+                    <a href={p.githubUrl.trim()} target="_blank" rel="noopener noreferrer" className="live-preview-link" aria-label="GitHub">
+                      GitHub
+                    </a>
+                  )}
                 </div>
-                {p.details ? <p className="live-preview-p">{p.details}</p> : null}
               </div>
             ))}
           </section>
@@ -80,7 +102,36 @@ export function LivePreview({ data, template = 'classic' }: { data: ResumeData; 
         {hasSkills && (
           <section className="live-preview-section">
             <h3 className="live-preview-h3">Skills</h3>
-            <p className="live-preview-p">{data.skills}</p>
+            {(data.skills?.technical?.length ?? 0) > 0 && (
+              <div className="live-preview-skill-group">
+                <span className="live-preview-skill-label">Technical</span>
+                <div className="live-preview-pills">
+                  {(data.skills.technical ?? []).map((s, i) => (
+                    <span key={`t-${i}`} className="live-preview-pill">{s}</span>
+                  ))}
+                </div>
+              </div>
+            )}
+            {(data.skills?.soft?.length ?? 0) > 0 && (
+              <div className="live-preview-skill-group">
+                <span className="live-preview-skill-label">Soft</span>
+                <div className="live-preview-pills">
+                  {(data.skills.soft ?? []).map((s, i) => (
+                    <span key={`s-${i}`} className="live-preview-pill">{s}</span>
+                  ))}
+                </div>
+              </div>
+            )}
+            {(data.skills?.tools?.length ?? 0) > 0 && (
+              <div className="live-preview-skill-group">
+                <span className="live-preview-skill-label">Tools</span>
+                <div className="live-preview-pills">
+                  {(data.skills.tools ?? []).map((s, i) => (
+                    <span key={`w-${i}`} className="live-preview-pill">{s}</span>
+                  ))}
+                </div>
+              </div>
+            )}
           </section>
         )}
 

@@ -103,16 +103,42 @@ export function PreviewPage() {
                   <span className="preview-resume-strong">{p.title || 'Project'}</span>
                   <span className="preview-resume-muted">{p.period}</span>
                 </div>
-                {p.details ? <p className="preview-resume-p">{p.details}</p> : null}
+                {(p.description || p.details) ? (
+                  <p className="preview-resume-p">{p.description || p.details}</p>
+                ) : null}
+                {(p.techStack?.length ?? 0) > 0 && (
+                  <p className="preview-resume-p">
+                    {(p.techStack ?? []).join(' · ')}
+                  </p>
+                )}
+                {((p.liveUrl?.trim()) || (p.githubUrl?.trim())) && (
+                  <p className="preview-resume-p">
+                    {[p.liveUrl, p.githubUrl].filter(Boolean).join('  ·  ')}
+                  </p>
+                )}
               </div>
             ))}
           </section>
         ) : null}
 
-        {data.skills ? (
+        {(data.skills?.technical?.length ?? 0) + (data.skills?.soft?.length ?? 0) + (data.skills?.tools?.length ?? 0) > 0 ? (
           <section className="preview-resume-section">
             <h2 className="preview-resume-h2">Skills</h2>
-            <p className="preview-resume-p">{data.skills}</p>
+            {data.skills?.technical?.length ? (
+              <p className="preview-resume-p">
+                <strong>Technical:</strong> {(data.skills.technical ?? []).join(', ')}
+              </p>
+            ) : null}
+            {data.skills?.soft?.length ? (
+              <p className="preview-resume-p">
+                <strong>Soft:</strong> {(data.skills.soft ?? []).join(', ')}
+              </p>
+            ) : null}
+            {data.skills?.tools?.length ? (
+              <p className="preview-resume-p">
+                <strong>Tools:</strong> {(data.skills.tools ?? []).join(', ')}
+              </p>
+            ) : null}
           </section>
         ) : null}
 

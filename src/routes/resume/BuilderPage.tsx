@@ -1,13 +1,17 @@
+import { useState } from 'react'
 import { useResume } from '../../context/ResumeContext'
 import { useTemplate } from '../../context/TemplateContext'
 import { TemplateTabs } from '../../components/TemplateTabs'
 import { AtsScoreCard } from './AtsScoreCard'
 import { BulletGuidance } from './BulletGuidance'
 import { LivePreview } from './LivePreview'
+import { SkillsSection } from './SkillsSection'
+import { ProjectsSection } from './ProjectsSection'
 import './BuilderPage.css'
 
 export function BuilderPage() {
   const { template } = useTemplate()
+  const [suggestLoading, setSuggestLoading] = useState(false)
   const {
     data,
     setPersonal,
@@ -21,10 +25,27 @@ export function BuilderPage() {
     addProject,
     updateProject,
     removeProject,
-    setSkills,
+    addSkill,
+    removeSkill,
+    addSuggestedSkills,
     setLinks,
     loadSampleData,
   } = useResume()
+
+  const handleSuggestSkills = () => {
+    setSuggestLoading(true)
+    addSuggestedSkills()
+    setTimeout(() => setSuggestLoading(false), 1000)
+  }
+
+  const handleAddTech = (id: string, tech: string) => {
+    const p = data.projects.find((pr) => pr.id === id)
+    if (p) updateProject(id, { techStack: [...(p.techStack || []), tech] })
+  }
+  const handleRemoveTech = (id: string, index: number) => {
+    const p = data.projects.find((pr) => pr.id === id)
+    if (p) updateProject(id, { techStack: (p.techStack || []).filter((_, i) => i !== index) })
+  }
 
   return (
     <div className="builder-page">
@@ -169,54 +190,22 @@ export function BuilderPage() {
           ))}
         </section>
 
-        <section className="form-section">
-          <div className="form-section-head">
-            <h2 className="form-section-title">Projects</h2>
-            <button type="button" className="btn btn-sm" onClick={addProject}>
-              Add entry
-            </button>
-          </div>
-          {data.projects.map((p) => (
-            <div key={p.id} className="form-entry">
-              <input
-                type="text"
-                placeholder="Project title"
-                value={p.title}
-                onChange={(ev) => updateProject(p.id, { title: ev.target.value })}
-                className="form-input"
-              />
-              <input
-                type="text"
-                placeholder="Period"
-                value={p.period}
-                onChange={(ev) => updateProject(p.id, { period: ev.target.value })}
-                className="form-input"
-              />
-              <textarea
-                placeholder="Details"
-                value={p.details}
-                onChange={(ev) => updateProject(p.id, { details: ev.target.value })}
-                className="form-textarea form-textarea-sm"
-                rows={2}
-              />
-              <BulletGuidance details={p.details} />
-              <button type="button" className="btn btn-sm btn-remove" onClick={() => removeProject(p.id)}>
-                Remove
-              </button>
-            </div>
-          ))}
-        </section>
+        <ProjectsSection
+          projects={data.projects}
+          onAdd={addProject}
+          onUpdate={updateProject}
+          onRemove={removeProject}
+          onAddTech={handleAddTech}
+          onRemoveTech={handleRemoveTech}
+        />
 
-        <section className="form-section">
-          <h2 className="form-section-title">Skills</h2>
-          <input
-            type="text"
-            placeholder="Comma-separated (e.g. JavaScript, React, SQL)"
-            value={data.skills}
-            onChange={(e) => setSkills(e.target.value)}
-            className="form-input"
-          />
-        </section>
+        <SkillsSection
+          skills={data.skills}
+          onAddSkill={addSkill}
+          onRemoveSkill={removeSkill}
+          onSuggestSkills={handleSuggestSkills}
+          suggestLoading={suggestLoading}
+        />
 
         <section className="form-section">
           <h2 className="form-section-title">Links</h2>

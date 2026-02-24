@@ -26,8 +26,18 @@ export type ExperienceEntry = {
 export type ProjectEntry = {
   id: string
   title: string
-  period: string
-  details: string
+  period?: string
+  details?: string
+  description: string
+  techStack: string[]
+  liveUrl: string
+  githubUrl: string
+}
+
+export type SkillsCategories = {
+  technical: string[]
+  soft: string[]
+  tools: string[]
 }
 
 export type Links = {
@@ -41,12 +51,14 @@ export type ResumeData = {
   education: EducationEntry[]
   experience: ExperienceEntry[]
   projects: ProjectEntry[]
-  skills: string
+  skills: SkillsCategories
   links: Links
 }
 
 const emptyPersonal: PersonalInfo = { name: '', email: '', phone: '', location: '' }
 const emptyLinks: Links = { github: '', linkedin: '' }
+
+const emptySkills: SkillsCategories = { technical: [], soft: [], tools: [] }
 
 const sampleData: ResumeData = {
   personal: {
@@ -64,9 +76,22 @@ const sampleData: ResumeData = {
     { id: 'x2', company: 'Startup Inc', role: 'Software Engineer', period: '2019 – 2021', details: 'Full-stack development. APIs and frontend.' },
   ],
   projects: [
-    { id: 'p1', title: 'Open Source Tool', period: '2022', details: 'CLI tool for developers. 2k+ GitHub stars.' },
+    {
+      id: 'p1',
+      title: 'Open Source Tool',
+      period: '2022',
+      details: 'CLI tool for developers. 2k+ GitHub stars.',
+      description: 'CLI tool for developers. 2k+ GitHub stars.',
+      techStack: ['TypeScript', 'Node.js'],
+      liveUrl: '',
+      githubUrl: 'https://github.com/alexchen/tool',
+    },
   ],
-  skills: 'JavaScript, TypeScript, React, Node.js, SQL, Git',
+  skills: {
+    technical: ['JavaScript', 'TypeScript', 'React', 'Node.js', 'SQL'],
+    soft: ['Team Leadership', 'Problem Solving'],
+    tools: ['Git', 'Docker'],
+  },
   links: { github: 'https://github.com/alexchen', linkedin: 'https://linkedin.com/in/alexchen' },
 }
 
@@ -78,7 +103,7 @@ const initialData: ResumeData = {
   education: [],
   experience: [],
   projects: [],
-  skills: '',
+  skills: { ...emptySkills },
   links: { ...emptyLinks },
 }
 
@@ -111,15 +136,57 @@ function loadFromStorage(): ResumeData {
       ? parsed.experience.map((e: unknown) => ensureId(e as ExperienceEntry))
       : []
     const projects = Array.isArray(parsed.projects)
-      ? parsed.projects.map((p: unknown) => ensureId(p as ProjectEntry))
+      ? parsed.projects.map((p: unknown) => {
+          const x = p as Record<string, unknown>
+          const id = (x?.id as string) || genId()
+          const title = typeof x?.title === 'string' ? x.title : ''
+          const description =
+            typeof x?.description === 'string'
+              ? x.description
+              : typeof x?.details === 'string'
+                ? x.details
+                : ''
+          const techStack = Array.isArray(x?.techStack) ? (x.techStack as string[]) : []
+          const liveUrl = typeof x?.liveUrl === 'string' ? x.liveUrl : ''
+          const githubUrl = typeof x?.githubUrl === 'string' ? x.githubUrl : ''
+          const period = typeof x?.period === 'string' ? x.period : undefined
+          const details = typeof x?.details === 'string' ? x.details : undefined
+          return {
+            id,
+            title,
+            period,
+            details,
+            description,
+            techStack,
+            liveUrl,
+            githubUrl,
+          } as ProjectEntry
+        })
       : []
+    let skills: SkillsCategories = { ...emptySkills }
+    if (
+      parsed.skills &&
+      typeof parsed.skills === 'object' &&
+      !Array.isArray(parsed.skills) &&
+      Array.isArray((parsed.skills as SkillsCategories).technical)
+    ) {
+      const s = parsed.skills as SkillsCategories
+      skills = {
+        technical: Array.isArray(s.technical) ? s.technical : [],
+        soft: Array.isArray(s.soft) ? s.soft : [],
+        tools: Array.isArray(s.tools) ? s.tools : [],
+      }
+    } else if (typeof parsed.skills === 'string' && parsed.skills.trim()) {
+      const list = parsed.skills.split(',').map((x: string) => x.trim()).filter(Boolean)
+      skills = { ...emptySkills, technical: list }
+    }
     return {
       personal,
       summary: typeof parsed.summary === 'string' ? parsed.summary : '',
       education,
       experience,
       projects,
-      skills: typeof parsed.skills === 'string' ? parsed.skills : '',
+      skills,
       links,
     }
   } catch {
@@ -146,7 +213,9 @@ type ResumeContextValue = {
   addProject: () => void
   updateProject: (id: string, u: Partial<ProjectEntry>) => void
   removeProject: (id: string) => void
-  setSkills: (s: string) => void
+  addSkill: (category: keyof SkillsCategories, skill: string) => void
+  removeSkill: (category: keyof SkillsCategories, index: number) => void
+  addSuggestedSkills: () => void
   setLinks: (l: Partial<Links>) => void
   loadSampleData: () => void
 }
@@ -199,7 +268,17 @@ export function ResumeProvider({ children }: { children: React.ReactNode }) {
   const addProject = useCallback(() => {
     setData((d) => ({
       ...d,
-      projects: [...d.projects, { id: genId(), title: '', period: '', details: '' }],
+      projects: [
+        ...d.projects,
+        {
+          id: genId(),
+          title: '',
+          description: '',
+          techStack: [],
+          liveUrl: '',
+          githubUrl: '',
+        },
+      ],
     }))
   }, [])
   const updateProject = useCallback((id: string, u: Partial<ProjectEntry>) => {
@@ -211,8 +290,43 @@ export function ResumeProvider({ children }: { children: React.ReactNode }) {
   const removeProject = useCallback((id: string) => {
     setData((d) => ({ ...d, projects: d.projects.filter((p) => p.id !== id) }))
   }, [])
-  const setSkills = useCallback((s: string) => {
-    setData((d) => ({ ...d, skills: s }))
+  const addSkill = useCallback((category: keyof SkillsCategories, skill: string) => {
+    const trimmed = skill.trim()
+    if (!trimmed) return
+    setData((d) => ({
+      ...d,
+      skills: {
+        ...d.skills,
+        [category]: d.skills[category].includes(trimmed)
+          ? d.skills[category]
+          : [...d.skills[category], trimmed],
+      },
+    }))
+  }, [])
+  const removeSkill = useCallback((category: keyof SkillsCategories, index: number) => {
+    setData((d) => ({
+      ...d,
+      skills: {
+        ...d.skills,
+        [category]: d.skills[category].filter((_, i) => i !== index),
+      },
+    }))
+  }, [])
+  const addSuggestedSkills = useCallback(() => {
+    setData((d) => {
+      const merge = (arr: string[], add: string[]) => {
+        const set = new Set([...arr, ...add])
+        return [...set]
+      }
+      return {
+        ...d,
+        skills: {
+          technical: merge(d.skills.technical, ['TypeScript', 'React', 'Node.js', 'PostgreSQL', 'GraphQL']),
+          soft: merge(d.skills.soft, ['Team Leadership', 'Problem Solving']),
+          tools: merge(d.skills.tools, ['Git', 'Docker', 'AWS']),
+        },
+      }
+    })
   }, [])
   const setLinks = useCallback((l: Partial<Links>) => {
     setData((d) => ({ ...d, links: { ...d.links, ...l } }))
@@ -235,7 +349,9 @@ export function ResumeProvider({ children }: { children: React.ReactNode }) {
       addProject,
       updateProject,
       removeProject,
-      setSkills,
+      addSkill,
+      removeSkill,
+      addSuggestedSkills,
       setLinks,
       loadSampleData,
     }),
@@ -252,7 +368,9 @@ export function ResumeProvider({ children }: { children: React.ReactNode }) {
       addProject,
       updateProject,
       removeProject,
-      setSkills,
+      addSkill,
+      removeSkill,
+      addSuggestedSkills,
       setLinks,
       loadSampleData,
     ]

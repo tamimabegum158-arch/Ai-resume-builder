@@ -130,3 +130,73 @@
 .live-preview.template-minimal .live-preview-item-sub {
   font-size: 0.85rem;
 }
+
+.live-preview-card {
+  margin-bottom: var(--space-16);
+  padding: var(--space-12);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--surface);
+}
+
+.live-preview-card:last-child {
+  margin-bottom: 0;
+}
+
+.live-preview-card-title {
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: var(--space-8);
+}
+
+.live-preview-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  margin-top: var(--space-8);
+}
+
+.live-preview-pill {
+  display: inline-block;
+  padding: 2px 8px;
+  background: var(--border);
+  border-radius: 4px;
+  font-size: 0.8rem;
+}
+
+.live-preview-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-8);
+  margin-top: var(--space-8);
+}
+
+.live-preview-link {
+  font-size: 0.85rem;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.live-preview-link:hover {
+  text-decoration: underline;
+}
+
+.live-preview-skill-group {
+  margin-bottom: var(--space-12);
+}
+
+.live-preview-skill-group:last-child {
+  margin-bottom: 0;
+}
+
+.live-preview-skill-label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--muted);
+  margin-bottom: var(--space-4);
+}
+
+.live-preview-skill-group .live-preview-pills {
+  margin-top: 0;
+}
