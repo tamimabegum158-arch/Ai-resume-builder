@@ -1,0 +1,19 @@
+.proof-placeholder {
+  max-width: var(--text-max-width);
+  margin: 0 auto;
+  padding: var(--space-64) var(--space-24);
+}
+
+.proof-placeholder-title {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0 0 var(--space-16);
+}
+
+.proof-placeholder-p {
+  color: var(--muted);
+  font-size: 1rem;
+  margin: 0;
+}

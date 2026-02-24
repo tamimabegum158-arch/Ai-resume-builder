@@ -1,0 +1,97 @@
+/* Premium typography, minimal black + white, no colors, ATS-friendly */
+.preview-page {
+  padding: var(--space-40) var(--space-24);
+  background: #fff;
+  min-height: 100%;
+}
+
+.preview-resume {
+  max-width: 720px;
+  margin: 0 auto;
+  background: #fff;
+  color: #1a1a1a;
+  padding: var(--space-40) var(--space-40);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.preview-resume-header {
+  margin-bottom: var(--space-24);
+  padding-bottom: var(--space-24);
+  border-bottom: 1px solid #1a1a1a;
+}
+
+.preview-resume-name {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.75rem;
+  font-weight: 600;
+  margin: 0 0 var(--space-8);
+  letter-spacing: -0.02em;
+}
+
+.preview-resume-contact {
+  font-size: 0.9rem;
+  color: #1a1a1a;
+  margin: 0;
+  opacity: 0.85;
+}
+
+.preview-resume-section {
+  margin-bottom: var(--space-24);
+}
+
+.preview-resume-h2 {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0 0 var(--space-16);
+  color: #1a1a1a;
+}
+
+.preview-resume-p {
+  margin: 0 0 var(--space-8);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #1a1a1a;
+}
+
+.preview-resume-p:last-child {
+  margin-bottom: 0;
+}
+
+.preview-resume-item {
+  margin-bottom: var(--space-24);
+}
+
+.preview-resume-item:last-child {
+  margin-bottom: 0;
+}
+
+.preview-resume-item-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-16);
+  margin-bottom: 2px;
+}
+
+.preview-resume-strong {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #1a1a1a;
+}
+
+.preview-resume-muted {
+  font-size: 0.85rem;
+  color: #1a1a1a;
+  opacity: 0.7;
+  flex-shrink: 0;
+}
+
+.preview-resume-sub {
+  font-size: 0.9rem;
+  color: #1a1a1a;
+  opacity: 0.8;
+  margin: 0 0 var(--space-8);
+}

@@ -1,0 +1,129 @@
+.builder-page {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  min-height: 0;
+  height: 100%;
+}
+
+@media (max-width: 900px) {
+  .builder-page {
+    grid-template-columns: 1fr;
+  }
+}
+
+.builder-column {
+  min-height: 0;
+  overflow: auto;
+  padding: var(--space-24);
+}
+
+.builder-form {
+  max-width: 560px;
+  border-right: 1px solid var(--border);
+}
+
+@media (max-width: 900px) {
+  .builder-form {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+}
+
+.builder-preview {
+  background: var(--surface);
+}
+
+.builder-actions {
+  margin-bottom: var(--space-24);
+}
+
+.form-section {
+  margin-bottom: var(--space-40);
+}
+
+.form-section-title {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0 0 var(--space-16);
+}
+
+.form-section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-16);
+}
+
+.form-section-head .form-section-title {
+  margin: 0;
+}
+
+.form-fields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.form-input,
+.form-textarea {
+  width: 100%;
+  padding: var(--space-8) var(--space-16);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 0.95rem;
+  font-family: inherit;
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.form-textarea-sm {
+  min-height: 56px;
+}
+
+.form-entry {
+  padding: var(--space-16);
+  margin-bottom: var(--space-16);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.btn {
+  padding: var(--space-8) var(--space-16);
+  border-radius: 4px;
+  border: none;
+  font-size: 0.9rem;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+}
+
+.btn-sm {
+  padding: var(--space-8) var(--space-16);
+  font-size: 0.85rem;
+}
+
+.btn-remove {
+  background: transparent;
+  color: var(--muted);
+  align-self: flex-start;
+}
+
+.btn-remove:hover {
+  color: var(--error);
+}
